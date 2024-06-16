@@ -1,9 +1,9 @@
+import streamlit as st
 import requests
 import os
 
 # Foursquare API key
 foursquare_api_key = os.environ.get("FOURSQUARE_API_KEY")
-
 
 def get_coordinates(place_name):
     url = f"https://nominatim.openstreetmap.org/search?q={place_name}&format=json"
@@ -26,18 +26,18 @@ def get_coordinates(place_name):
                     longitude = round(longitude, 2)
                     return latitude, longitude
                 else:
-                    print("No data found for the specified place.")
+                    st.warning("No data found for the specified place.")
                     return None
             except requests.exceptions.JSONDecodeError as e:
-                print(f"JSON decode error: {e}")
-                print("Response content:", response.text)
+                st.error(f"JSON decode error: {e}")
+                st.text("Response content:", response.text)
                 return None
         else:
-            print(f"Request failed with status code: {response.status_code}")
-            print("Response content:", response.text)
+            st.error(f"Request failed with status code: {response.status_code}")
+            st.text("Response content:", response.text)
             return None
     except requests.RequestException as e:
-        print(f"Request error: {e}")
+        st.error(f"Request error: {e}")
         return None
 
 def get_nearby_projects(json_data):
@@ -54,37 +54,38 @@ def get_nearby_projects(json_data):
         nearby_projects.append(project)
     return nearby_projects
 
-# Example usage
-place_name = "Purva Westend"
-coordinates = get_coordinates(place_name)
-if coordinates:
-    print(f"Coordinates of {place_name}: ({coordinates[0]}, {coordinates[1]})")
+# Streamlit UI
+st.title("Real Estate Project Analysis")
 
-    c = f"{coordinates[0]}%2C{coordinates[1]}"
+place_name = st.text_input("Enter the name of the place:")
+if st.button("Analyze"):
+    coordinates = get_coordinates(place_name)
+    if coordinates:
+        st.write(f"Coordinates of {place_name}: ({coordinates[0]}, {coordinates[1]})")
 
-    url = f"https://api.foursquare.com/v3/places/nearby?ll={c}&limit=50"
+        c = f"{coordinates[0]}%2C{coordinates[1]}"
 
-    headers = {
-        "accept": "application/json",
-        "Authorization": foursquare_api_key
-    }
+        url = f"https://api.foursquare.com/v3/places/nearby?ll={c}&limit=50"
 
-    response = requests.get(url, headers=headers)
+        headers = {
+            "accept": "application/json",
+            "Authorization": foursquare_api_key
+        }
 
-    print(response.text)
+        response = requests.get(url, headers=headers)
 
-    nearby_projects = get_nearby_projects(response.json())
-    if nearby_projects:
-        print("\nCompetitive Projects in the Vicinity:")
-        for project in nearby_projects:
-            print("\nName:", project["name"])
-            print("Distance:", project["distance"], "m")
-            print("Categories:", project["categories"])
-            print("Address:", project["address"])
-            print("Postcode:", project["postcode"])
-            print("Country:", project["country"])
-            print("Developer Reputation:", project["developer_reputation"])
+        nearby_projects = get_nearby_projects(response.json())
+        if nearby_projects:
+            st.success("\nCompetitive Projects in the Vicinity:")
+            for project in nearby_projects:
+                st.write("\nName:", project["name"])
+                st.write("Distance:", project["distance"], "m")
+                st.write("Categories:", project["categories"])
+                st.write("Address:", project["address"])
+                st.write("Postcode:", project["postcode"])
+                st.write("Country:", project["country"])
+                st.write("Developer Reputation:", project["developer_reputation"])
+        else:
+            st.warning("No nearby projects found.")
     else:
-        print("No nearby projects found.")
-else:
-    print("Failed to get coordinates.")
+        st.error("Failed to get coordinates.")
