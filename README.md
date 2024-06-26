@@ -7,8 +7,8 @@ Welcome to the Real Estate Project Analysis App! This Streamlit web application 
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/Adityak8340/real-estate-analysis.git
-    cd real-estate-analysis
+    git clone https://github.com/Adityak8340/RealEstate.git
+    cd RealEstate
     ```
 
 2. **Install dependencies:**
