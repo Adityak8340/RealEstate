@@ -44,12 +44,6 @@ Welcome to the Real Estate Project Analysis App! This Streamlit web application 
 - Detailed information about each competitive project, including developer reputation and air quality index (AQI), is displayed.
 - The app compares the main project with competitive projects and generates an analysis report.
 
-## Demo
-
-
-
-https://github.com/Adityak8340/RealEstate/assets/140245948/34e64386-84f9-4d18-85bb-dc5ddd57e463
-
 
 
 ## API References
