@@ -1,3 +1,11 @@
+# Sample
+
+
+https://github.com/Adityak8340/RealEstate/assets/140245948/795edd30-29e5-4be9-ba93-8cfba2253033
+
+
+
+
 # 🏠 Real Estate Project Analysis App 📊
 
 Welcome to the Real Estate Project Analysis App! This Streamlit web application provides comprehensive insights into real estate projects using data from various APIs including Foursquare, OpenWeatherMap, and Groq AI.
